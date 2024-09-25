@@ -37,7 +37,7 @@ unsigned int log10(unsigned int n)
 {
     assert(n != 0);
 
-    unsigned int m;
+    unsigned int m{0};
     while (n >= 10)
     {
         m++;
@@ -50,7 +50,7 @@ unsigned int count(unsigned int n, unsigned int bit)
 {
     assert(bit == 0 || bit == 1);
 
-    unsigned int total = 0;
+    unsigned int total{0};
     for (unsigned int i = 0; i < 32; ++i)
     {
         if (bit == (n & 1))
