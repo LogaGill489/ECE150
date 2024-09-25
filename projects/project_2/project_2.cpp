@@ -57,9 +57,6 @@ unsigned int count(unsigned int n, unsigned int bit)
             ++total;
 
         n >>= 1;
-
-        if (n == 0)
-            break;
     }
     return total;
 }
