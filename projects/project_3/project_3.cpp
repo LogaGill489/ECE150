@@ -66,11 +66,11 @@ std::size_t shift_duplicates(int array[], std::size_t capacity)
         }
     }
 
-    uniques = capacity - flipped - tot_flipped;
+    uniques = capacity - flipped;
 
     // prints out the array back for testing
     /*
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 2; i++) {
         std::cout << array[i] << std::endl;
     }
     std::cout << std::endl;
@@ -100,9 +100,10 @@ void deallocate(double *&ptr, bool is_array, std::size_t capacity = 0)
 
 int main()
 {
-    int array[11] = {0, 13, 2, 13, 4, 13, 89, 5, 4, 7679, 1};
+    int array[11] = {0, 13, 2, 33, 4, 44, 89, 5, 345, 7679, 13};
     int arr2[2] = {0, 0};
     int arr[1] = {2};
+    int data[10]{ 5, 4, 2, 2, 2, 4, 5, 1, 4, 3 };
     std::cout << shift_duplicates(arr2, 2);
     return 0;
 }
