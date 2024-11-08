@@ -40,9 +40,7 @@ double *cross_correlation(double array0[], std::size_t cap0, double array1[], st
 std::size_t shift_duplicates(int array[], std::size_t capacity)
 {
     int flipped{0};
-    int tot_flipped{0};
     std::size_t uniques{0};
-    bool did_flip = false;
     for (int i = 0; i < (capacity - flipped); i++)
     {
         for (int j = i + 1; j < (capacity - flipped); j++)
@@ -57,12 +55,7 @@ std::size_t shift_duplicates(int array[], std::size_t capacity)
                 array[capacity - 1] = set;
                 flipped++;
                 j--;
-                did_flip = true;
             }
-        }
-        if (did_flip) {
-            did_flip = false;
-            tot_flipped++;
         }
     }
 
