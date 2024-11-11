@@ -91,6 +91,7 @@ std::size_t is_sorted(char *array[], std::size_t capacity) // 2.5
 }
 void insert(char *array[], std::size_t capacity) // 2.6
 {
+    
 }
 void insertion_sort(char *array[], std::size_t capacity) // 2.7
 {
@@ -114,9 +115,9 @@ int main()
     //test variables for functions
     char a1[21]{'a', 'w', 'o', 'a'};
     char a2[21]{'b', 'e', 'x', 'q', 'k', 'r', 'e', 'r', 'b', 'a', 'z', 'y', 'q', 'z', 'q', 'i', 't', 't', 't'};
-    char a3[21]{'a', 'q', 'p', 'j', 't'};
+    char a3[21]{'c', 'q', 'p', 'j', 't'};
     char a4[21]{'d', 'j', 'q', 'u', 'i', 'g', 'u'};
-    char a5[21]{'e', 'v', 'j', 'y', 'e', 'r', 'h', 'j', 'n', 'p', 'm', 'o', 'n', 'p', 'm', 'g', 'r', 'p', 'n'};
+    char a5[21]{'a', 'v', 'j', 'y', 'e', 'r', 'h', 'j', 'n', 'p', 'm', 'o', 'n', 'p', 'm', 'g', 'r', 'p', 'n'};
     char a6[21]{'f', 'm', 'z', 'i', 'r', 'e', 'c', 't', 'e', 'u', 'q', 'i', 'x', 'z', 'y'};
     char a7[21]{'g', 'c', 'w'};
     char a8[21]{'h', 's', 'i'};
