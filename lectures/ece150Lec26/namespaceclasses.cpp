@@ -1,6 +1,6 @@
 /*
 Array Merging
-
+- doesn't work for some reason
 
 
 */
@@ -67,8 +67,26 @@ void merge(double array[], std::size_t cap_1, std::size_t cap_2)
     }
 }
 
+void merge_sort(double array[], std::size_t capacity)
+{
+    if (capacity <= 1)
+    {
+        return;
+    }
+    else
+    {
+        std::size_t capacity_1{capacity / 2};
+        std::size_t capacity_2{capacity – capacity_1};
+        merge_sort(array, capacity_1);
+        merge_sort(array + capacity_1, capacity_2);
+        merge(array, capacity_1, capacity_2);
+    }
+}
+
 int main()
 {
     int a1[8]{4, 7, 9, 16, 21, 22, 27};
     int a2[11]{2, 3, 6, 11, 18, 24, 25, 29, 32, 35};
+
+    ostream &bob( ostream &out );
 }
