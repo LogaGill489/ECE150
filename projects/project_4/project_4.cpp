@@ -84,13 +84,15 @@ void insert(char *array[], std::size_t capacity) // 2.6
 }
 void insertion_sort(char *array[], std::size_t capacity) // 2.7
 {
-    char *arr{new char[21 * capacity]};
+    /*char *arr{new char[21 * capacity]};
     for (int i{0}; i < 21 * capacity; i++)
-        arr[i] = (*array)[i];
+        arr[i] = (*array)[i];*/
+
     for (int i{2}; i <= capacity; i++)
         insert(array, i);
-    for (int i{0}; i < 21 * capacity; i++)
-        (*array)[i] = arr[i];
+
+    /*for (int i{0}; i < 21 * capacity; i++)
+        (*array)[i] = arr[i];*/
 }
 std::size_t remove_duplicates(char *array[], std::size_t capacity) // 2.8
 {
