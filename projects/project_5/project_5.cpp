@@ -135,7 +135,8 @@ class Node {
 
 // Node constructor
 Node::Node( int new_value, Node *new_next ) {
-
+  value_ = new_value;
+  next_ = new_next;
 }
  
 int Node::value() const {
