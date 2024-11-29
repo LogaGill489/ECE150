@@ -13,7 +13,19 @@
 /// Each section contains the expected outputs in coments
 /// You do not need to include this main in your submission to Marmoset 
 //
+
 int main() {
+  Set my_data_1{ 1, 3, 5, 2, 4, 8, 5, 3, 1 };
+// This should print '6'
+std::cout << my_data_1.size() << std::endl;
+// This should print '0' ('false')
+std::cout << my_data_1.empty() << std::endl;
+assert( my_data_1.find( 0 ) == nullptr );
+assert( my_data_1.find( 1 )->value() == 1 );
+assert( my_data_1.find( 5 )->value() == 5 );
+assert( my_data_1.find( 6 ) == nullptr );
+assert( my_data_1.find( 8 )->value() );
+
   Set A{};
   A.insert( 1 );
   A.insert( 2 );
