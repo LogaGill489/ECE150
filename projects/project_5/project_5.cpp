@@ -169,22 +169,45 @@ Set::~Set()
 // Copy constructor
 Set::Set(Set const &orig)
 {
+  p_head_ = nullptr; // possibly made a memory leak, look into later
+  for (Node *ptr{orig.p_head_}; ptr != nullptr; ptr = ptr->next())
+  {
+    // Call 'insert(...)' with the value returned by ptr->value()
+    insert(ptr->value());
+  }
 }
 
 // Move constructor
 Set::Set(Set &&orig)
 {
+  p_head_ = orig.p_head_;
+  orig.p_head_ = nullptr;
 }
 
 // Copy assignment
 Set &Set::operator=(Set const &orig)
 {
+  if (this != &orig)
+  {
+    clear();
+    Node *p_temp{orig.p_head_};
+    while (p_temp != nullptr)
+    {
+      insert(p_temp->value());
+      p_temp = p_temp->next();
+    }
+  }
   return *this;
 }
 
 // Move assignment
 Set &Set::operator=(Set &&orig)
 {
+  if (this != &orig)
+  {
+    p_head_ = orig.p_head_;
+    orig.p_head_ = nullptr;
+  }
   return *this;
 }
 
@@ -210,12 +233,12 @@ size_t Set::size() const
 // Clear
 void Set::clear()
 {
-  Node *current = p_head_;
-  while (current)
+  Node *p_current = p_head_;
+  while (p_current != nullptr)
   {
-    Node *nextNode = current->next();
-    delete current;
-    current = nextNode;
+    Node *nextNode = p_current->next();
+    delete p_current;
+    p_current = nextNode;
   }
   p_head_ = nullptr;
 }
@@ -245,12 +268,12 @@ std::size_t Set::insert(int const &item)
     }
     else
     {
-      Node *current = p_head_;
-      while (current->next() != nullptr) 
+      Node *p_current = p_head_;
+      while (p_current->next() != nullptr)
       {
-        current = current->next();
+        p_current = p_current->next();
       }
-      current->next_ = newNode;
+      p_current->next_ = newNode;
     }
     return 1;
   }
@@ -262,14 +285,44 @@ std::size_t Set::insert(int const array[],
                         std::size_t const begin,
                         std::size_t const end)
 {
-  return 0;
+  size_t totIn{0};
+  for (size_t i{begin}; i < end; i++)
+  {
+    if (insert(array[i]))
+      totIn++;
+  }
+  return totIn;
 }
 
 // Remove the item from the set and
 // return the number of items removed.
 std::size_t Set::erase(int const &item)
 {
-
+  if (find(item) != nullptr) // in the linked list
+  {
+    size_t totRemoved{0};
+    while (find(item) != nullptr)
+    {
+      Node *p_current{p_head_};
+      if (find(item) == p_head_)
+      {
+        totRemoved++;
+        Node *p_temp{p_head_->next()};
+        delete p_head_;
+        p_head_ = p_temp;
+        break;
+      }
+      while (p_current->next()->value() != item)
+      {
+        p_current = p_current->next();
+      }
+      Node *p_temp{p_current->next()};
+      p_current->next_ = find(item)->next();
+      delete p_temp;
+      totRemoved++;
+    }
+    return totRemoved;
+  }
   return 0;
 }
 
@@ -280,7 +333,21 @@ std::size_t Set::erase(int const &item)
 std::size_t Set::merge(Set &other)
 {
   std::size_t count{0};
-  return 0;
+  Node *p_current{other.p_head_};
+  while (p_current != nullptr)
+  {
+    if (find(p_current->value()) == nullptr) // just in other list
+    {
+      insert(p_current->value());
+      Node *p_temp{p_current};
+      p_current = p_current->next();
+      other.erase(p_temp->value());
+      count++;
+    }
+    else
+      p_current = p_current->next();
+  }
+  return count;
 }
 
 //////////////////////
@@ -288,46 +355,90 @@ std::size_t Set::merge(Set &other)
 //////////////////////
 Set &Set::operator|=(Set const &other)
 {
+  Node *p_current{other.p_head_};
+  while (p_current != nullptr)
+  {
+    insert(p_current->value());
+    p_current = p_current->next();
+  }
   return *this;
 }
 
 Set &Set::operator&=(Set const &other)
 {
+  Node *p_current{p_head_};
+  while (p_current != nullptr)
+  {
+    if (other.find(p_current->value()) == nullptr) // in first set, not second
+    {
+      Node *p_temp{p_current};
+      p_current = p_current->next();
+      erase(p_temp->value());
+    }
+    else
+      p_current = p_current->next();
+  }
   return *this;
 }
 
 Set &Set::operator^=(Set const &other)
 {
+  Node *p_current{other.p_head_};
+  while (p_current != nullptr)
+  {
+    if (find(p_current->value()) != nullptr)
+    {
+      Node *p_temp{p_current};
+      p_current = p_current->next();
+      erase(p_temp->value());
+    }
+    else
+    {
+      insert(p_current->value());
+      p_current = p_current->next();
+    }
+  }
   return *this;
 }
 
 Set &Set::operator-=(Set const &other)
 {
+  Node *p_current{other.p_head_};
+  while (p_current != nullptr)
+  {
+    if (find(p_current->value()) != nullptr) // in both sets
+      erase(p_current->value());
+    p_current = p_current->next();
+  }
   return *this;
 }
 
 Set Set::operator|(Set const &other) const
 {
-  Set result{};
-  return result;
+  Set tmp{*this};
+  tmp |= other;
+  return tmp;
 }
 
 Set Set::operator&(Set const &other) const
 {
-  Set result{};
-  return result;
+  Set tmp{*this};
+  tmp &= other;
+  return tmp;
 }
 
 Set Set::operator^(Set const &other) const
 {
-  Set result{};
-  return result;
+  Set tmp{*this};
+  tmp ^= other;
+  return tmp;
 }
 
 Set Set::operator-(Set const &other) const
 {
-  Set result{};
-  return result;
+  Set tmp{*this};
+  tmp -= other;
+  return tmp;
 }
 
 // Returns 'true' if the 'other' set
@@ -336,32 +447,60 @@ Set Set::operator-(Set const &other) const
 // also in this set.
 bool Set::operator>=(Set const &other) const
 {
-  return false;
+  Node *p_current{other.p_head_};
+  while (p_current != nullptr)
+  {
+    if (find(p_current->value()) == nullptr)
+      return false;
+    p_current = p_current->next();
+  }
+  return true;
 }
 
 bool Set::operator<=(Set const &other) const
 {
-  return false;
+  Node *p_current{p_head_};
+  while (p_current != nullptr)
+  {
+    if (other.find(p_current->value()) == nullptr)
+      return false;
+    p_current = p_current->next();
+  }
+  return true;
 }
 
 bool Set::operator>(Set const &other) const
 {
+  if (*this >= other)
+  {
+    Node *p_current{p_head_};
+    while (p_current != nullptr)
+    {
+      if (other.find(p_current->value()) == nullptr)
+        return true;
+      p_current = p_current->next();
+    }
+  }
   return false;
 }
 
 bool Set::operator<(Set const &other) const
 {
-  return false;
+  return (other > *this);
 }
 
 bool Set::operator==(Set const &other) const
 {
+  if (*this >= other && other >= *this)
+    return true;
   return false;
 }
 
 bool Set::operator!=(Set const &other) const
 {
-  return false;
+    if (*this >= other && other >= *this)
+    return false;
+  return true;
 }
 
 ////////////////////////////////////////////
