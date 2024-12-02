@@ -332,6 +332,7 @@ std::size_t Set::erase(int const &item)
 // in both sets, in both sets.
 std::size_t Set::merge(Set &other)
 {
+  /*
   std::size_t count{0};
   Node *p_current{other.p_head_};
   while (p_current != nullptr)
@@ -346,6 +347,34 @@ std::size_t Set::merge(Set &other)
     }
     else
       p_current = p_current->next();
+  }
+  */
+   std::size_t count{0};
+  Node *p_current{other.p_head_};
+  Node *p_prev{nullptr};
+
+  while (p_current != nullptr)
+  {
+    if (find(p_current->value()) == nullptr) // just in other list
+    {
+      Node *to_move = p_current;
+      p_current = p_current->next();
+
+      if (p_prev == nullptr)
+        other.p_head_ = p_current;
+      else
+        p_prev->next_ = p_current;
+      
+      to_move->next_ = p_head_;
+      p_head_ = to_move;
+
+      count++;
+    }
+    else
+    {
+      p_prev = p_current;
+      p_current = p_current->next();
+    }
   }
   return count;
 }
@@ -498,7 +527,7 @@ bool Set::operator==(Set const &other) const
 
 bool Set::operator!=(Set const &other) const
 {
-    if (*this >= other && other >= *this)
+  if (*this >= other && other >= *this)
     return false;
   return true;
 }

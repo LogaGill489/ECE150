@@ -18,7 +18,7 @@ int main() {
   Set F{ 1,2,3,7,8,9 };
   Set G{ 3,4,5,7,9,11 };
 
-  F = G;
+  //F = G;
 
   std::cout << (F != G);
 
