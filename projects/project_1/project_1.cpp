@@ -224,60 +224,63 @@ void gradeEnter(int i)
 
 int main()
 {
-    // runs for each thing worth marks
-    for (int i = 0; i < 7; i++)
+    while (true)
     {
-        maxEnter(i);
-        gradeEnter(i);
-    }
-    // calculates averages
-    for (int i = 0; i < 7; i++)
-    {
-        setCurrents(i); // gets M(i) and G(i)
-        currentA = 100 * (currentG / currentM);
-        setAverages(i); // stores A(i)
-    }
-
-    // weighs in favour of the final exam's mark
-    for (int i = 1; i < 7; i++)
-    {
-        setCurrents(i);
-        if (currentA < A1)
+        // runs for each thing worth marks
+        for (int i = 0; i < 7; i++)
         {
-            currentA = A1;
-            setAverages(i);
+            maxEnter(i);
+            gradeEnter(i);
         }
-    }
+        // calculates averages
+        for (int i = 0; i < 7; i++)
+        {
+            setCurrents(i); // gets M(i) and G(i)
+            currentA = 100 * (currentG / currentM);
+            setAverages(i); // stores A(i)
+        }
 
-    // test average weighed calculation
-    float testAverage = (A1 * 0.75) + (A2 / 4);
+        // weighs in favour of the final exam's mark
+        for (int i = 1; i < 7; i++)
+        {
+            setCurrents(i);
+            if (currentA < A1)
+            {
+                currentA = A1;
+                setAverages(i);
+            }
+        }
 
-    // project average calculation
-    float projectAverage;
-    for (int i = 2; i < 7; i++)
-    {
-        setCurrents(i);
-        projectAverage += currentA;
-    }
-    projectAverage /= 5;
+        // test average weighed calculation
+        float testAverage = (A1 * 0.75) + (A2 / 4);
 
-    // case 1 of final grade
-    if (testAverage <= 40)
-    {
-        final = testAverage;
-    }
-    else if (testAverage >= 60)
-    {
-        final = (2 * testAverage) / 3 + projectAverage / 3;
-    }
-    else
-    {
-        final = (projectAverage * (testAverage - 40) / 60) + (testAverage * (1 - ((testAverage - 40) / 60)));
-    }
+        // project average calculation
+        float projectAverage;
+        for (int i = 2; i < 7; i++)
+        {
+            setCurrents(i);
+            projectAverage += currentA;
+        }
+        projectAverage /= 5;
 
-    // rounds final answer to an int solution
-    final = std::round(final + 1e-12);
+        // case 1 of final grade
+        if (testAverage <= 40)
+        {
+            final = testAverage;
+        }
+        else if (testAverage >= 60)
+        {
+            final = (2 * testAverage) / 3 + projectAverage / 3;
+        }
+        else
+        {
+            final = (projectAverage * (testAverage - 40) / 60) + (testAverage * (1 - ((testAverage - 40) / 60)));
+        }
 
-    // outputs final score
-    std::cout << "Your Course Mark Is " << final << "%.";
+        // rounds final answer to an int solution
+        final = std::round(final + 1e-12);
+
+        // outputs final score
+        std::cout << "Your Course Mark Is " << final << "%.";
+    }
 }
