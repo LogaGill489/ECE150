@@ -1,5 +1,49 @@
 #include <iostream>
 
+class Matrix {
+ public:
+ Matrix( unsigned int m, unsigned int n );
+ Matrix( Matrix const &orig );
+~Matrix();
+ double &operator()( unsigned int i, unsigned int j );
+ Matrix &operator*=( double c );
+ private:
+ unsigned int m_;
+ unsigned int n_;
+ double *array_;
+};
+
+Matrix::Matrix( unsigned int m, unsigned int n ) {
+    m_ = m;
+    n_ = n;
+    array_ = new double[m*n];
+}
+
+Matrix::Matrix( Matrix const &orig ) {
+    m_ = orig.m_;
+    n_ = orig.n_;
+    array_ = new double[m_*n_];
+    for (int i{0}; i < m_*n_; i++) {
+        array_[i] = orig.array_[i];
+    }
+}
+
+Matrix::~Matrix() {
+        delete[] array_;
+        array_ = nullptr;
+}
+
+double &Matrix::operator()( unsigned int i, unsigned int j ) {
+    return array_[n_ * i + j];
+}
+
+Matrix &Matrix::operator*=( double c ) {
+    for (int i{0}; i < n_*m_; i++) {
+        array_[i] *= c;
+    }
+    return *this;
+}
+
 unsigned int f(unsigned int n)
 {
     unsigned int a{0};
