@@ -12,7 +12,7 @@
 /// - Compile using: g++ -std=c++11 roject_5_test_main.cpp -o main.exe
 /// Each section contains the expected outputs in coments
 /// You do not need to include this main in your submission to Marmoset 
-//
+// Finished Modifying proj 5
 
 int main() {
   Set F{ 1,2,3,7,8,9 };
